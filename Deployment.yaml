@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-notes-app-deployment
+  namespace: my-notes-app
+  labels:
+    app: my-notes-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: my-notes-app
+  template:
+    metadata:
+      labels:
+        app: my-notes-app
+    spec:
+      containers:
+      - name: my-notes-app-container
+        image: adityabhosale212223/my-notes-app:latest
+        ports:
+        - containerPort: 5000
+        # Correct way to pull ALL keys from a ConfigMap/Secret as Env Vars
+        envFrom:
+        - configMapRef:
+            name: notes-config
+        - secretRef:
+            name: mysecret
